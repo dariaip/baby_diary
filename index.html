@@ -161,7 +161,51 @@
     .cta-box p { font-size: 17px; opacity: 0.92; max-width: 540px; margin: 0 auto 36px; }
 
     .form { max-width: 480px; margin: 0 auto; text-align: left; }
+    /* === Инлайн-валидация === */
     .form-row { margin-bottom: 16px; }
+
+    .form-row.error input,
+    .form-row.error textarea {
+      box-shadow: 0 0 0 2px #ff6b6b;
+    }
+
+    .form-error {
+      display: none;
+      color: #ffe0dc;
+      font-size: 13px;
+      line-height: 1.4;
+      margin-top: 6px;
+      padding-left: 4px;
+      text-align: left;
+    }
+
+    .form-row.error .form-error,
+    .form-checkbox-wrap.error .form-error {
+      display: block;
+    }
+
+    .form-checkbox-wrap { margin-bottom: 20px; }
+
+    .form-checkbox-wrap.error .form-checkbox {
+      color: #ffe0dc;
+    }
+
+    .form-checkbox-wrap.error .form-checkbox input {
+      outline: 2px solid #ff6b6b;
+      outline-offset: 2px;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+
+    .form-row.error input,
+    .form-row.error textarea,
+    .form-checkbox-wrap.error .form-checkbox {
+      animation: shake 0.3s ease;
+    }
 
     .form input[type="text"],
     .form input[type="email"],
@@ -377,24 +421,34 @@
 
       <form class="form" id="leadForm" novalidate>
         <div class="form-row">
-          <input type="text" name="name" placeholder="Ваше имя" required />
+          <input type="text" name="name" placeholder="Ваше имя" autocomplete="name" />
+          <div class="form-error">Введите имя</div>
         </div>
+
         <div class="form-row">
-          <input type="email" name="email" placeholder="Email" required />
+          <input type="email" name="email" placeholder="Email" autocomplete="email" />
+          <div class="form-error">Введите email</div>
         </div>
+
         <div class="form-row">
-          <input type="tel" name="phone" placeholder="Телефон (необязательно)" />
+          <input type="tel" name="phone" placeholder="Телефон (необязательно)" autocomplete="tel" />
         </div>
+
         <div class="form-row">
           <textarea name="comment" placeholder="Что для вас важно в таком приложении? (необязательно)"></textarea>
         </div>
-        <label class="form-checkbox">
-          <input type="checkbox" name="consent" required />
-          <span>
-            Я даю <a href="/consent.html" target="_blank">согласие на обработку персональных данных</a>
-            и принимаю <a href="/privacy.html" target="_blank">политику конфиденциальности</a>
-          </span>
-        </label>
+
+        <div class="form-checkbox-wrap">
+          <label class="form-checkbox">
+            <input type="checkbox" name="consent" />
+            <span>
+              Я даю <a href="/consent.html" target="_blank">согласие на обработку персональных данных</a>
+              и принимаю <a href="/privacy.html" target="_blank">политику конфиденциальности</a>
+            </span>
+          </label>
+          <div class="form-error">Без согласия на обработку данных мы не можем принять заявку</div>
+        </div>
+
         <button type="submit" class="form-submit" id="submitBtn">
           Получить ранний доступ за 299 ₽
         </button>
@@ -459,70 +513,126 @@
 </footer>
 
 <script>
+  // ===== FAQ =====
   document.querySelectorAll('.faq-q').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.parentElement.classList.toggle('open');
-    });
+    btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
   });
 
+  // ===== Метрика =====
+  const COUNTER_ID = 113527944;
+
+  // ===== Форма =====
   const form = document.getElementById('leadForm');
   const success = document.getElementById('formSuccess');
   const submitBtn = document.getElementById('submitBtn');
 
+  function getWrap(field) {
+    return field.closest('.form-row') || field.closest('.form-checkbox-wrap');
+  }
+
+  function showError(field, message) {
+    const wrap = getWrap(field);
+    if (!wrap) return;
+    wrap.classList.remove('error'); // перезапуск анимации
+    void wrap.offsetWidth;
+    wrap.classList.add('error');
+    const errEl = wrap.querySelector('.form-error');
+    if (errEl && message) errEl.textContent = message;
+  }
+
+  function clearError(field) {
+    const wrap = getWrap(field);
+    if (wrap) wrap.classList.remove('error');
+  }
+
+  function validateForm() {
+    let firstInvalid = null;
+
+    // Имя
+    if (!form.name.value.trim()) {
+      showError(form.name, 'Введите имя');
+      firstInvalid = firstInvalid || form.name;
+    } else {
+      clearError(form.name);
+    }
+
+    // Email
+    const email = form.email.value.trim();
+    if (!email) {
+      showError(form.email, 'Введите email');
+      firstInvalid = firstInvalid || form.email;
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+      showError(form.email, 'Проверьте формат email — например, name@mail.ru');
+      firstInvalid = firstInvalid || form.email;
+    } else {
+      clearError(form.email);
+    }
+
+    // Согласие
+    if (!form.consent.checked) {
+      showError(form.consent, 'Без согласия на обработку данных мы не можем принять заявку');
+      firstInvalid = firstInvalid || form.consent;
+    } else {
+      clearError(form.consent);
+    }
+
+    return { valid: !firstInvalid, firstInvalid };
+  }
+
+  // Снимаем ошибку при вводе
+  ['name', 'email', 'phone', 'comment'].forEach((n) => {
+    form[n]?.addEventListener('input', () => clearError(form[n]));
+  });
+  form.consent.addEventListener('change', () => clearError(form.consent));
+
+  // Отправка
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const consent = form.consent.checked;
-
-    if (!name || !email) { alert('Пожалуйста, заполните имя и email'); return; }
-    if (!/^\S+@\S+\.\S+$/.test(email)) { alert('Проверьте email'); return; }
-    if (!consent) { alert('Необходимо согласие на обработку персональных данных'); return; }
+    const { valid, firstInvalid } = validateForm();
+    if (!valid) {
+      firstInvalid.focus({ preventScroll: true });
+      firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'Отправляем...';
 
     const payload = {
-      name,
-      email,
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
       phone: form.phone.value.trim(),
       comment: form.comment.value.trim(),
       source: 'landing-mvp',
       timestamp: new Date().toISOString(),
     };
 
+    // 1. Цель в Метрику — до сетевых запросов
     try {
-      // === Вариант 1: Telegram-бот (самый быстрый) ===
-      // Создайте бота у @BotFather, получите токен и chat_id
-      /*
-      const TG_TOKEN = 'YOUR_BOT_TOKEN';
-      const TG_CHAT_ID = 'YOUR_CHAT_ID';
-      await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: TG_CHAT_ID,
-          text: `Новая заявка!\n\nИмя: ${name}\nEmail: ${email}\nТелефон: ${payload.phone}\nКомментарий: ${payload.comment}`,
-        }),
-      });
-      */
-
-      // === Вариант 2: Заглушка для теста ===
-      console.log('Lead:', payload);
-
-      if (window.ym) { window.ym(113527944, 'reachGoal', 'lead_submit'); }
-      if (window.gtag) { window.gtag('event', 'generate_lead', { value: 299, currency: 'RUB' }); }
-
-      form.style.display = 'none';
-      success.classList.add('visible');
-
+      if (typeof window.ym === 'function') {
+        window.ym(COUNTER_ID, 'reachGoal', 'lead_submit');
+        console.log('✅ reachGoal lead_submit, счётчик:', COUNTER_ID);
+      } else {
+        console.warn('⚠️ window.ym не найден — проверьте блок Метрики в <head>');
+      }
     } catch (err) {
-      console.error(err);
-      alert('Что-то пошло не так. Попробуйте позже.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Получить ранний доступ за 299 ₽';
+      console.error('❌ reachGoal:', err);
     }
+
+    // 2. Отправка заявки (Telegram / бэкенд)
+    try {
+      // const TG_TOKEN = '...';
+      // const TG_CHAT_ID = '...';
+      // await fetch(...);
+      console.log('Lead:', payload);
+    } catch (err) {
+      console.error('❌ Ошибка отправки заявки:', err);
+    }
+
+    // 3. Успех
+    form.style.display = 'none';
+    success.classList.add('visible');
   });
 </script>
 </body>
