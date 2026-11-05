@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI-дневник малыша — поймите, почему ребёнок плохо спит</title>
-  <meta name="description" content="AI-дневник для родителей детей 0–3 лет. Анализирует сон, кормление и развитие, предсказывает окна сна и формирует отчёт для педиатра." />
-  <meta property="og:title" content="AI-дневник малыша" />
-  <meta property="og:description" content="Поймите, почему ребёнок плохо спит. AI-анализ режима и отчёт для педиатра." />
+  <title>Спокойные ночи и спокойные дни — AI-дневник малыша</title>
+  <meta name="description" content="AI-дневник для родителей детей 0–3 лет. Понимает, почему ребёнок просыпается ночью, и показывает, что происходит с малышом, когда вы передали его няне или бабушке." />
+  <meta property="og:title" content="AI-дневник малыша — спокойные ночи и спокойные дни" />
+  <meta property="og:description" content="Понимает ночные пробуждения и показывает, что происходит, когда вас нет рядом. Без звонков каждые полчаса." />
   <meta property="og:type" content="website" />
 
   <!-- Яндекс Метрика: раскомментируйте и вставьте свой номер -->
@@ -81,7 +81,7 @@
     .hero h1 .accent { color: var(--accent-dark); }
 
     .hero p.sub {
-      font-size: clamp(16px, 2vw, 20px); color: var(--muted); max-width: 620px; margin: 0 auto 40px;
+      font-size: clamp(16px, 2vw, 20px); color: var(--muted); max-width: 640px; margin: 0 auto 40px;
     }
 
     .hero-cta {
@@ -161,9 +161,43 @@
     .cta-box p { font-size: 17px; opacity: 0.92; max-width: 540px; margin: 0 auto 36px; }
 
     .form { max-width: 480px; margin: 0 auto; text-align: left; }
-    /* === Инлайн-валидация === */
     .form-row { margin-bottom: 16px; }
 
+    .form input[type="text"],
+    .form input[type="email"],
+    .form input[type="tel"] {
+      width: 100%; padding: 16px 20px; border-radius: 12px; border: none; font-size: 16px;
+      font-family: inherit; background: rgba(255, 255, 255, 0.95); color: var(--text); outline: none;
+    }
+
+    .form textarea {
+      width: 100%; padding: 16px 20px; border-radius: 12px; border: none; font-size: 16px;
+      font-family: inherit; background: rgba(255, 255, 255, 0.95); color: var(--text);
+      outline: none; resize: vertical; min-height: 90px;
+    }
+
+    .form-checkbox-wrap { margin-bottom: 20px; }
+
+    .form-checkbox { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; opacity: 0.9; }
+    .form-checkbox input { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: #fff; }
+    .form-checkbox a { color: #fff; text-decoration: underline; }
+
+    .form-submit {
+      width: 100%; padding: 18px; border-radius: 100px; border: none; background: #fff;
+      color: var(--accent-dark); font-size: 17px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .form-note { text-align: center; font-size: 13px; opacity: 0.85; margin-top: 16px; }
+
+    .form-success { display: none; text-align: center; padding: 40px 20px; }
+    .form-success.visible { display: block; }
+    .form-success .check { font-size: 48px; margin-bottom: 16px; }
+    .form-success h3 { font-size: 24px; margin-bottom: 12px; }
+
+    /* === Инлайн-валидация === */
     .form-row.error input,
     .form-row.error textarea {
       box-shadow: 0 0 0 2px #ff6b6b;
@@ -184,16 +218,8 @@
       display: block;
     }
 
-    .form-checkbox-wrap { margin-bottom: 20px; }
-
-    .form-checkbox-wrap.error .form-checkbox {
-      color: #ffe0dc;
-    }
-
-    .form-checkbox-wrap.error .form-checkbox input {
-      outline: 2px solid #ff6b6b;
-      outline-offset: 2px;
-    }
+    .form-checkbox-wrap.error .form-checkbox { color: #ffe0dc; }
+    .form-checkbox-wrap.error .form-checkbox input { outline: 2px solid #ff6b6b; outline-offset: 2px; }
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
@@ -206,38 +232,6 @@
     .form-checkbox-wrap.error .form-checkbox {
       animation: shake 0.3s ease;
     }
-
-    .form input[type="text"],
-    .form input[type="email"],
-    .form input[type="tel"] {
-      width: 100%; padding: 16px 20px; border-radius: 12px; border: none; font-size: 16px;
-      font-family: inherit; background: rgba(255, 255, 255, 0.95); color: var(--text); outline: none;
-    }
-
-    .form textarea {
-      width: 100%; padding: 16px 20px; border-radius: 12px; border: none; font-size: 16px;
-      font-family: inherit; background: rgba(255, 255, 255, 0.95); color: var(--text);
-      outline: none; resize: vertical; min-height: 90px;
-    }
-
-    .form-checkbox { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 20px; font-size: 13px; opacity: 0.9; }
-    .form-checkbox input { margin-top: 3px; flex-shrink: 0; width: 16px; height: 16px; accent-color: #fff; }
-    .form-checkbox a { color: #fff; text-decoration: underline; }
-
-    .form-submit {
-      width: 100%; padding: 18px; border-radius: 100px; border: none; background: #fff;
-      color: var(--accent-dark); font-size: 17px; font-weight: 700; font-family: inherit;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
-    .form-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    .form-note { text-align: center; font-size: 13px; opacity: 0.85; margin-top: 16px; }
-
-    .form-success { display: none; text-align: center; padding: 40px 20px; }
-    .form-success.visible { display: block; }
-    .form-success .check { font-size: 48px; margin-bottom: 16px; }
-    .form-success h3 { font-size: 24px; margin-bottom: 12px; }
 
     .faq { max-width: 720px; margin: 0 auto; }
 
@@ -259,7 +253,7 @@
       max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
       padding: 0 24px; color: var(--muted); font-size: 15px;
     }
-    .faq-item.open .faq-a { max-height: 300px; padding-bottom: 22px; }
+    .faq-item.open .faq-a { max-height: 400px; padding-bottom: 22px; }
 
     footer { padding: 48px 0 32px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); }
 
@@ -290,10 +284,10 @@
 <section class="hero">
   <div class="container">
     <div class="hero-badge">Ранний доступ · первым 100 — скидка 50%</div>
-    <h1>Поймите, почему ребёнок плохо спит — <span class="accent">за 2 недели</span></h1>
+    <h1>Спокойные ночи. <br />И спокойные дни — <span class="accent">даже когда вас нет рядом</span></h1>
     <p class="sub">
-      AI-дневник анализирует сон, кормление и развитие вашего малыша,
-      находит закономерности и подсказывает, когда укладывать. Плюс — готовый отчёт для педиатра.
+      AI-дневник понимает, почему малыш просыпается ночью, и показывает, что с ним происходит,
+      когда вы передали его няне, папе или бабушке. Без звонков каждые полчаса.
     </p>
     <a href="#cta" class="hero-cta">Получить ранний доступ</a>
     <p class="hero-note">Для родителей детей 0–3 лет · 299 ₽/мес. вместо 599 ₽</p>
@@ -303,22 +297,22 @@
 <section class="section">
   <div class="container">
     <h2 class="section-title">Знакомо?</h2>
-    <p class="section-sub">Три боли, с которыми сталкивается каждый родитель</p>
+    <p class="section-sub">Три состояния, в которых вы не чувствуете спокойствия</p>
     <div class="problems-grid">
       <div class="problem-card">
-        <div class="problem-emoji">😵‍💫</div>
-        <h3>Слишком много категорий</h3>
-        <p>Приложения требуют вносить сон, кормление, подгузники, настроение. Через неделю вы бросаете — потому что это работа, а не помощь.</p>
+        <div class="problem-emoji">🌙</div>
+        <h3>Ночь. Он снова не спит</h3>
+        <p>Просыпается каждые два часа, и вы не понимаете, почему. Перегулял? Зубки? Регресс? Вы перепробовали всё и уже не помните, что было вчера.</p>
       </div>
       <div class="problem-card">
-        <div class="problem-emoji">🤔</div>
-        <h3>Не понимаете, почему капризы</h3>
-        <p>Ребёнок плачет, вы не знаете причину. Пробовали ли укладывать раньше? Как кормление влияет на сон? Данные есть, но они не связаны между собой.</p>
+        <div class="problem-emoji">📞</div>
+        <h3>Передали — и звоните</h3>
+        <p>Вы оставили малыша с няней или бабушкой и звоните каждые полчаса: «Как он? Поел? Спит?» Человек раздражается, вы не успокаиваетесь, и оба устали.</p>
       </div>
       <div class="problem-card">
-        <div class="problem-emoji">📋</div>
-        <h3>Педиатр спрашивает — вы не помните</h3>
-        <p>На приёме: «Сколько он спит днём?» — и вы лихорадочно листаете заметки в телефоне. Нужен готовый отчёт, а не разрозненные записи.</p>
+        <div class="problem-emoji">🤯</div>
+        <h3>Всё в голове — и ничего не помнится</h3>
+        <p>Сколько он спал днём? Во сколько последнее кормление? Вы держите это в голове, пока не начинаете путаться — и тогда тревога только растёт.</p>
       </div>
     </div>
   </div>
@@ -326,28 +320,28 @@
 
 <section class="section" style="background: var(--surface);">
   <div class="container">
-    <h2 class="section-title">Как это работает</h2>
-    <p class="section-sub">Четыре шага от хаоса к пониманию</p>
+    <h2 class="section-title">Как возвращается спокойствие</h2>
+    <p class="section-sub">Четыре шага — от хаоса к тихим ночам и спокойным дням</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <h3>Вносите за 1–2 тапа</h3>
-        <p>Сон, кормление, настроение. Одна рука, три секунды. Или голосом — AI распарсит «спал с 13 до 14:30».</p>
+        <p>Тот, кто с ребёнком — вы, папа, няня или бабушка — отмечает сон и кормление в одно касание. Или голосом: AI распарсит «спал с 13 до 14:30».</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <h3>AI находит паттерны</h3>
-        <p>Модель подстраивается под вашего ребёнка: среднее окно бодрствования, связь кормления и сна.</p>
+        <h3>AI находит, почему он просыпается</h3>
+        <p>Модель подстраивается под вашего малыша: окна бодрствования, связь кормления и ночных пробуждений, повторяющиеся паттерны.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Получаете прогноз</h3>
-        <p>«Уложите в 16:45 — это окно максимально комфортное». Уведомление приходит заранее.</p>
+        <h3>Видите, что происходит без вас</h3>
+        <p>Передали ребёнка — и получаете тихие push-уведомления: «покормлен в 12:30», «спит с 13:10». Не нужно звонить, чтобы узнать.</p>
       </div>
       <div class="step">
         <div class="step-num">4</div>
-        <h3>Экспортируете отчёт</h3>
-        <p>PDF для педиатра: динамика сна, кормлений, отклонения от возрастных норм за 2 недели.</p>
+        <h3>Получаете сигнал «всё спокойно»</h3>
+        <p>Если ничего не происходит — приходит тихое «всё хорошо». Вечером — короткий дайджест дня: сон, кормление, настроение.</p>
       </div>
     </div>
   </div>
@@ -357,27 +351,27 @@
   <div class="container">
     <div class="diff">
       <h2 class="section-title">Почему не Huckleberry и не Napper</h2>
-      <p class="section-sub">Мы решаем то, что они не решают</p>
+      <p class="section-sub">Они решают половину задачи — и только для вас</p>
       <ul class="diff-list">
         <li>
           <span class="diff-check">✓</span>
           <div>
-            <strong>AI не только для сна</strong>
-            <span>Анализируем кормление, развитие и их связь. Конкуренты предсказывают только сон.</span>
+            <strong>Ночь и день в одном</strong>
+            <span>Конкуренты предсказывают только сон. Мы связываем ночные пробуждения с дневным режимом и кормлением — и показываем, что делать сегодня.</span>
           </div>
         </li>
         <li>
           <span class="diff-check">✓</span>
           <div>
-            <strong>Отчёт для педиатра</strong>
-            <span>Автоматический PDF, которого нет ни у одного конкурента. Приходите на приём подготовленными.</span>
+            <strong>Видимость, когда вас нет рядом</strong>
+            <span>Няня, папа или бабушка вносят данные в один тап — вы видите события и получаете тихий сигнал «всё спокойно». Без звонков каждые полчаса.</span>
           </div>
         </li>
         <li>
           <span class="diff-check">✓</span>
           <div>
-            <strong>Роль для бабушек и дедушек</strong>
-            <span>Старшее поколение видит расписание и фото, получает напоминания. Не просто «доступ», а сценарий участия.</span>
+            <strong>Вносит тот, кто с ребёнком</strong>
+            <span>У каждого свой вход и свои права: тот, кто с малышом, — отмечает. Тот, кто наблюдает, — видит. Не нужно делить один пароль на всех.</span>
           </div>
         </li>
         <li>
@@ -398,16 +392,16 @@
     <p class="section-sub">Отзывы участников тестовой группы (имена изменены)</p>
     <div class="quotes">
       <div class="quote">
-        <p>«Наконец-то приложение, которое не заставляет меня вносить 15 категорий. Три тапа — и всё. И оно реально говорит, когда укладывать».</p>
+        <p>«Впервые за месяц я не просыпалась каждые два часа, чтобы записать, во сколько он встал. Приложение само показало, что он перегуливает днём — и ночи стали спокойнее».</p>
         <div class="quote-author">— Анна, мама Миши (7 мес.)</div>
       </div>
       <div class="quote">
-        <p>«С отчётом для педиатра впервые пришли на приём подготовленными. Врач удивился, что у меня есть все данные за две недели».</p>
-        <div class="quote-author">— Дмитрий, папа Сони (1 год 2 мес.)</div>
+        <p>«Оставила сына с няней впервые и не позвонила ни разу за четыре часа. Просто видела, что он поел и спит. Это было невероятное облегчение».</p>
+        <div class="quote-author">— Мария, мама Артёма (4 мес.)</div>
       </div>
       <div class="quote">
-        <p>«Бабушка смотрит расписание внука с телефона и не звонит каждые полчаса с вопросом "он поел?"».</p>
-        <div class="quote-author">— Мария, мама Артёма (4 мес.)</div>
+        <p>«Муж наконец перестал спрашивать "а что делать?" — он просто открывает приложение и видит, когда последний раз кормили и когда укладывать».</p>
+        <div class="quote-author">— Дмитрий и Ольга, родители Сони (1 год 2 мес.)</div>
       </div>
     </div>
   </div>
@@ -435,7 +429,7 @@
         </div>
 
         <div class="form-row">
-          <textarea name="comment" placeholder="Что для вас важно в таком приложении? (необязательно)"></textarea>
+          <textarea name="comment" placeholder="Что для вас важнее: спокойные ночи или видеть, что происходит, когда вас нет рядом?"></textarea>
         </div>
 
         <div class="form-checkbox-wrap">
@@ -470,9 +464,9 @@
     <p class="section-sub">&nbsp;</p>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q">Это заменит врача?<span class="icon">+</span></button>
+        <button class="faq-q">Это медицинское приложение?<span class="icon">+</span></button>
         <div class="faq-a">
-          Нет. Приложение — помощник для наблюдения и структурирования данных. Оно подсказывает, когда укладывать, и формирует отчёт, но не ставит диагнозы. Все медицинские решения — с педиатром.
+          Нет. Это помощник для наблюдения и структурирования данных о сне и кормлении. Оно подсказывает, когда укладывать, и показывает закономерности, но не ставит диагнозы. Все медицинские решения — с вашим врачом.
         </div>
       </div>
       <div class="faq-item">
@@ -482,9 +476,15 @@
         </div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">Бабушка сможет пользоваться?<span class="icon">+</span></button>
+        <button class="faq-q">Няня или бабушка смогут пользоваться?<span class="icon">+</span></button>
         <div class="faq-a">
-          Да, для старшего поколения — упрощённый интерфейс: только расписание, фото и напоминания. Без логирования и сложных настроек.
+          Да. Тот, кто проводит время с ребёнком, получает максимально простой экран — одна кнопка «покормлен», «поспал», «гуляем». Вы видите события и получаете тихие уведомления. Няне не нужно вести дневник — только отмечать в одно касание.
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Что если ночью ничего не происходит?<span class="icon">+</span></button>
+        <div class="faq-a">
+          Вы получите тихий сигнал «всё спокойно». Это работает лучше, чем молчание: вы знаете, что с малышом всё в порядке, и не тянетесь к телефону.
         </div>
       </div>
       <div class="faq-item">
@@ -507,7 +507,7 @@
     </div>
     <div class="footer-legal">
       Проект на стадии тестирования<br />
-      © 2026 AI-дневник малыша.
+      © 2026 AI-дневник малыша
     </div>
   </div>
 </footer>
@@ -533,7 +533,7 @@
   function showError(field, message) {
     const wrap = getWrap(field);
     if (!wrap) return;
-    wrap.classList.remove('error'); // перезапуск анимации
+    wrap.classList.remove('error');
     void wrap.offsetWidth;
     wrap.classList.add('error');
     const errEl = wrap.querySelector('.form-error');
@@ -548,7 +548,6 @@
   function validateForm() {
     let firstInvalid = null;
 
-    // Имя
     if (!form.name.value.trim()) {
       showError(form.name, 'Введите имя');
       firstInvalid = firstInvalid || form.name;
@@ -556,7 +555,6 @@
       clearError(form.name);
     }
 
-    // Email
     const email = form.email.value.trim();
     if (!email) {
       showError(form.email, 'Введите email');
@@ -568,7 +566,6 @@
       clearError(form.email);
     }
 
-    // Согласие
     if (!form.consent.checked) {
       showError(form.consent, 'Без согласия на обработку данных мы не можем принять заявку');
       firstInvalid = firstInvalid || form.consent;
@@ -579,13 +576,11 @@
     return { valid: !firstInvalid, firstInvalid };
   }
 
-  // Снимаем ошибку при вводе
   ['name', 'email', 'phone', 'comment'].forEach((n) => {
     form[n]?.addEventListener('input', () => clearError(form[n]));
   });
   form.consent.addEventListener('change', () => clearError(form.consent));
 
-  // Отправка
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
